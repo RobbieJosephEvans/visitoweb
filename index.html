@@ -6,12 +6,47 @@
         <!-- HERE ARE YOUR FIREBASE and GOOGLE AUTHENICATION IMPORTS -->
         <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
         <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     </head>
-    <body >
-            <h1 id="uid"></h1>
-            <p>This app shows basics of Firebase with Javascript. Inspect page and view console to see info.</p>
+    <body>
+    <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="sass.html">Sass</a></li>
+        <li><a href="badges.html">Components</a></li>
+        <li><a href="collapsible.html">JavaScript</a></li>
+      </ul>
+    </div>
+  </nav>
+    <div class="container"> 
+      <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            <div class="col s2">
+              <img src="https://lh3.googleusercontent.com/a-/AAuE7mBF97GVNtuUz7vkL5WdGqjv6VuPNNEG3L0AAE2s" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            </div>
+            <div class="col s10">
+            
+                 
+            <h1 class ="purple-text text-darken-4" id="uid"></h1>
+            <p class="purple-text text-darken-4">This app shows basics of Firebase with Javascript. Inspect page and view console to see info.</p>
             <ol>
-                <li> Visito </li>
+                <li>new firebase project called basic</li>
+                <li>enable google authenication</li>
+                <li>create realtime database in test mode</li>
+                <li>get config from project settings/web</li>
+                <li>copy this code - right click view source - paste to editor</li>
+                <li>save index.html to a folder</li>
+                <li>terminal, cd to folder and invoke local server</li>
+                <li>python -m SimpleHTTPServer</li>
+                <li>try reading/writing to/from different nodes in firebase</li>
+                <li><a href="https://youtu.be/OgL070gjZkI" target="_blank">Explanatory video</a></li>
+                <li><a href="process.html" target="_blank">Example code to process JS Objects returned by Firebase</a></li>
             </ol>
             <button onclick="signin()">Sign in</button>
             <button onclick="getData()">Get data</button>
@@ -20,20 +55,21 @@
             <button onclick="pushData()">Push data</button>
             <button onclick="removeData()">Remove data</button>
             <div id="info"></div>
+      </div>
     </body>
     
     <!-- HERE IS THE JAVASCRIPT TO CONNECT TO YOUR FIREBASE -->
     <script>
         // Your web app's Firebase configuration
         var config = {
-            apiKey: "AIzaSyDP8g3S_q6lv_7f5SOcltMvOdlYnSZNWto",
-                authDomain: "visito-4f5b4.firebaseapp.com",
-                databaseURL: "https://visito-4f5b4.firebaseio.com",
-                projectId: "visito-4f5b4",
-                storageBucket: "visito-4f5b4.appspot.com",
-                messagingSenderId: "1071822956661",
-                appId: "1:1071822956661:web:cc3efa7ddddc88ea3eb03c",
-                measurementId: "G-EWSBV06E2Q"
+            apiKey: "AIzaSyBTS-4a_yBDFWSi6kR_eApba9rDx5nsAgQ",
+            authDomain: "basic-175a6.firebaseapp.com",
+            databaseURL: "https://basic-175a6.firebaseio.com",
+            projectId: "basic-175a6",
+            storageBucket: "basic-175a6.appspot.com",
+            messagingSenderId: "904541940451",
+            appId: "1:904541940451:web:cf299d44c03ad07f8573d6",
+            measurementId: "G-E79KC4789W"
           };
         firebase.initializeApp(config);
                
@@ -43,8 +79,9 @@
                 document.getElementById("uid").innerHTML = "not logged in";
                 return;
             } else {
-                userId = user.uid; // you can also get .displayName, .photoURL, .email
+                userId = user.displayName; // you can also get .displayName, .photoURL, .email
                 document.getElementById("uid").innerHTML = userId; // display Google uid on page
+                
                 
             } // end user null check
         }); // end check auth state
@@ -62,12 +99,7 @@
        function setData() {
            var userId = document.getElementById("uid").innerHTML;
            var js_time = Date.now();
-           // firebase.database().ref('/tweets/' + userId).set({tweet:"Set over-writes", time: js_time}); 
-           firebase.database().ref("/users/").push({
-            name: "Rob",
-            age: 20,
-            description: "crazy",
-           })
+           firebase.database().ref('/tweets/' + userId).set({tweet:"Set over-writes", time: js_time}); 
        }
         
        // HERE IS THE FUNCTION TO SHOW HOW TO SET/OVERWRITE USER DATA
