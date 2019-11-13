@@ -1,0 +1,98 @@
+
+<!-- Welcome to some sample code to control your Firebase Database -->
+<!-- HERE IS YOUR HTML TO SET UP YOUR PAGE -->
+<html>
+    <head>
+        <!-- HERE ARE YOUR FIREBASE and GOOGLE AUTHENICATION IMPORTS -->
+        <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    </head>
+    <body >
+            <h1 id="uid"></h1>
+            <p>This app shows basics of Firebase with Javascript. Inspect page and view console to see info.</p>
+            <ol>
+                <li> Visito </li>
+            </ol>
+            <button onclick="signin()">Sign in</button>
+            <button onclick="getData()">Get data</button>
+            <button onclick="setData()">Set data</button>
+            <button onclick="updateData()">Update data</button>
+            <button onclick="pushData()">Push data</button>
+            <button onclick="removeData()">Remove data</button>
+            <div id="info"></div>
+    </body>
+    
+    <!-- HERE IS THE JAVASCRIPT TO CONNECT TO YOUR FIREBASE -->
+    <script>
+        // Your web app's Firebase configuration
+        var config = {
+            apiKey: "AIzaSyDP8g3S_q6lv_7f5SOcltMvOdlYnSZNWto",
+                authDomain: "visito-4f5b4.firebaseapp.com",
+                databaseURL: "https://visito-4f5b4.firebaseio.com",
+                projectId: "visito-4f5b4",
+                storageBucket: "visito-4f5b4.appspot.com",
+                messagingSenderId: "1071822956661",
+                appId: "1:1071822956661:web:cc3efa7ddddc88ea3eb03c",
+                measurementId: "G-EWSBV06E2Q"
+          };
+        firebase.initializeApp(config);
+               
+        // Check to see if you are logged in
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user == null) {
+                document.getElementById("uid").innerHTML = "not logged in";
+                return;
+            } else {
+                userId = user.uid; // you can also get .displayName, .photoURL, .email
+                document.getElementById("uid").innerHTML = userId; // display Google uid on page
+                
+            } // end user null check
+        }); // end check auth state
+        
+       // HERE IS THE FUNCTION TO SHOW HOW TO GET USER DATA
+       function getData() {
+           var userId = document.getElementById("uid").innerHTML;
+           firebase.database().ref('/tweets/' + userId).once('value', function(snapshot) {
+               console.log(snapshot.val());
+           });
+
+       }
+       
+       // HERE IS THE FUNCTION TO SHOW HOW TO SET/OVERWRITE USER DATA
+       function setData() {
+           var userId = document.getElementById("uid").innerHTML;
+           var js_time = Date.now();
+           // firebase.database().ref('/tweets/' + userId).set({tweet:"Set over-writes", time: js_time}); 
+           firebase.database().ref("/users/").push({
+            name: "Rob",
+            age: 20,
+            description: "crazy",
+           })
+       }
+        
+       // HERE IS THE FUNCTION TO SHOW HOW TO SET/OVERWRITE USER DATA
+       function updateData() {
+           var userId = document.getElementById("uid").innerHTML;
+           firebase.database().ref('/tweets/' + userId).update({tweet:"Update replaces data, but will leave non replaced data as is"}); 
+       }
+         
+        // HERE IS THE FUNCTION TO SHOW HOW TO PUSH/ADD NEW USER DATA TO EXISTING DATABASE
+        function pushData() {
+            var userId = document.getElementById("uid").innerHTML;
+            var js_time = Date.now();
+            var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tweet: "push adds to the nodes, a unique key/timestamp is also added", time: js_time});
+        }
+
+        // HERE IS THE FUNCTION TO SHOW HOW TO REMOVE USER DATA FROM EXISTING DATABASE - BE CAREFUL!
+        function removeData() {
+            var tweetid = firebase.database().ref('tweets/' + userId + "/").remove();
+        }
+        
+        function signin() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithRedirect(provider).then(function(result) { 
+                window.location.replace("fbtest.html");
+            });
+        }
+    </script>
+</html>
