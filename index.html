@@ -1,4 +1,3 @@
-
 <!-- Welcome to some sample code to control your Firebase Database -->
 <!-- HERE IS YOUR HTML TO SET UP YOUR PAGE -->
 <html>
@@ -28,12 +27,13 @@
         <div class="card-panel grey lighten-5 z-depth-1">
           <div class="row valign-wrapper">
             <div class="col s2">
-              <img src="https://lh3.googleusercontent.com/a-/AAuE7mBF97GVNtuUz7vkL5WdGqjv6VuPNNEG3L0AAE2s" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+              <img class="circle responsive-img" id="uid1" src=""></img> <!-- notice the "circle" class -->
             </div>
             <div class="col s10">
             
                  
             <h1 class ="purple-text text-darken-4" id="uid"></h1>
+            
             <p class="purple-text text-darken-4">This app shows basics of Firebase with Javascript. Inspect page and view console to see info.</p>
             <ol>
                 <li>new firebase project called basic</li>
@@ -57,6 +57,14 @@
             <div id="info"></div>
       </div>
     </body>
+
+    <style>
+      .test() {
+
+
+        }
+
+    </style>
     
     <!-- HERE IS THE JAVASCRIPT TO CONNECT TO YOUR FIREBASE -->
     <script>
@@ -77,10 +85,19 @@
         firebase.auth().onAuthStateChanged(function(user) {
             if (user == null) {
                 document.getElementById("uid").innerHTML = "not logged in";
+                document.getElementById("uid1").src="";
                 return;
             } else {
                 userId = user.displayName; // you can also get .displayName, .photoURL, .email
                 document.getElementById("uid").innerHTML = userId; // display Google uid on page
+                userId1 = user.photoURL;
+
+                //test1=src="https://lh3.googleusercontent.com/a-/AAuE7mBF97GVNtuUz7vkL5WdGqjv6VuPNNEG3L0AAE2s"
+                document.getElementById("uid1").src=user.photoURL;
+                
+
+
+                
                 
                 
             } // end user null check
@@ -92,7 +109,6 @@
            firebase.database().ref('/tweets/' + userId).once('value', function(snapshot) {
                console.log(snapshot.val());
            });
-
        }
        
        // HERE IS THE FUNCTION TO SHOW HOW TO SET/OVERWRITE USER DATA
@@ -114,7 +130,6 @@
             var js_time = Date.now();
             var tweetid = firebase.database().ref('tweets/' + userId + "/").push({tweet: "push adds to the nodes, a unique key/timestamp is also added", time: js_time});
         }
-
         // HERE IS THE FUNCTION TO SHOW HOW TO REMOVE USER DATA FROM EXISTING DATABASE - BE CAREFUL!
         function removeData() {
             var tweetid = firebase.database().ref('tweets/' + userId + "/").remove();
@@ -126,5 +141,7 @@
                 window.location.replace("fbtest.html");
             });
         }
+
+      
     </script>
 </html>
